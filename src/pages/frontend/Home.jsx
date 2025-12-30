@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FrontEndLayout from "../../layout/FrontEndLayout";
-import { productList } from "../../Data";
 import { Link } from "react-router-dom";
 import ProductsByCategory from "../../components/ProductsByCategory";
 
 function Home() {
+  let [data, setData] = useState([]);
+  useEffect(() => {
+    fetch(`https://dummyjson.com/products`)
+      .then((a) => a.json())
+      .then((b) => setData(b.products));
+  }, []);
   return (
     <>
       <FrontEndLayout>
@@ -12,7 +17,7 @@ function Home() {
           <div className="container mx-auto">
             <h2>All Products</h2>
             <div className="grid grid-cols-4 gap-5">
-              {productList.map((a) => (
+              {data.map((a) => (
                 <div className="shadow p-2 border">
                   <Link to={`/detail/${a.id}`}>
                     <img src={a.thumbnail} alt="" />
@@ -23,8 +28,8 @@ function Home() {
             </div>
           </div>
         </section>
-        <ProductsByCategory slug='beauty' />
-        <ProductsByCategory slug='furniture'/>
+        <ProductsByCategory slug="beauty" />
+        <ProductsByCategory slug="furniture" />
       </FrontEndLayout>
     </>
   );

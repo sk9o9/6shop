@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FrontEndLayout from "../../layout/FrontEndLayout";
 import { useParams } from "react-router";
-import { productList } from "../../Data";
 
 function Detail() {
   let { id } = useParams();
-  let find = productList.find((a) => a.id == id);
+  let [data, setData] = useState([]);
+  useEffect(() => {
+    fetch(`https://dummyjson.com/products/${id}`)
+      .then((a) => a.json())
+      .then((b) => setData(b));
+  }, []);
   return (
     <FrontEndLayout>
       <section>
         <div className="container mx-auto">
-          <h2>{find.title}</h2>
-          <img src={find.thumbnail} alt="" />
+          <h2>{data.title}</h2>
+          <img src={data.thumbnail} alt="" />
         </div>
       </section>
     </FrontEndLayout>
